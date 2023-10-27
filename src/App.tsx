@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect } from "react";
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "./Feature/counterSlice";
+import { getCatsFetch } from "./Feature/catSlice";
 function App() {
+  const counter = useSelector((state: any) => state.counter);
+
+  const cats = useSelector((state: any) => state.cats.cats);
+
+  console.log(cats);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCatsFetch());
+  }, [dispatch]);
+
+  function handelAdd() {
+    dispatch(add());
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        {cats &&
+          cats.map((c: { [key: string]: any }) => (
+            <li>
+              <p>{c.name}</p>
+              <img width={200} height={200} src={c.image} alt="" />
+            </li>
+          ))}
+      </ul>
+      helo {counter}
+      <button onClick={handelAdd}>add</button>
     </div>
   );
 }
